@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>口コミ作成アプリ制作代行｜質問に答えるだけでGoogleマップの口コミ下書きが完成【株式会社しっとる】</title>
+<meta name="description" content="治療院・サロン・教室など店舗オーナー様へ。お客様が質問に答えるだけで、AIがGoogleマップ用の口コミ下書きを作成する「あなたのお店専用の口コミ作成アプリ」を制作代行。実際に店舗で稼働中の実画面を公開中。ステマ規制・Googleのポリシーに配慮した設計。相談無料。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="口コミ作成アプリ制作代行｜株式会社しっとる">
+<meta property="og:description" content="お客様が質問に答えるだけで、AIがGoogleマップ用の口コミ下書きを作成。あなたのお店専用の口コミ作成アプリを制作代行します。">
+<meta property="og:site_name" content="株式会社しっとる">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/png" href="assets/shittoru_logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy-950:#081026;
+  --navy-900:#0B1633;
+  --navy-800:#13224A;
+  --navy-700:#1C2F5E;
+  --orange:#F4650E;
+  --orange-dark:#D9540A;
+  --orange-soft:#FFB27A;
+  --ink:#1A2233;
+  --gray-600:#5B6472;
+  --gray-100:#F3F5F9;
+  --white:#FFFFFF;
+  --radius:18px;
+  --shadow:0 10px 30px rgba(11,22,51,.10);
+  --maxw:1080px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:"Noto Sans JP",sans-serif;
+  color:var(--ink);
+  background:var(--white);
+  line-height:1.85;
+  font-size:16px;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img{max-width:100%}
+a{text-decoration:none;color:inherit}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+@media(max-width:360px){.wrap{padding:0 16px}}
+
+/* ---------- reveal animation ---------- */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.reveal.is-visible{opacity:1;transform:none}
+@media (prefers-reduced-motion: reduce){.reveal{opacity:1;transform:none;transition:none}}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.6em;
+  background:linear-gradient(180deg,#FF7A24,var(--orange));
+  color:#fff;font-weight:700;
+  padding:1.05em 2.4em;border-radius:999px;
+  box-shadow:0 8px 24px rgba(244,101,14,.38);
+  transition:transform .2s ease,box-shadow .2s ease,filter .2s ease;
+  text-align:center;line-height:1.5;min-height:48px;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(244,101,14,.45);filter:brightness(1.04)}
+.btn .arrow{display:inline-block;transition:transform .2s ease}
+.btn:hover .arrow{transform:translateX(4px)}
+.btn--lg{font-size:1.15rem;padding:1.2em 3em}
+.btn--ghost{
+  background:transparent;border:2px solid rgba(255,255,255,.55);box-shadow:none;
+}
+.btn--ghost:hover{box-shadow:none;background:rgba(255,255,255,.08)}
+.btn--ghostDark{
+  background:#fff;border:2px solid var(--navy-800);color:var(--navy-800);box-shadow:none;
+}
+.btn--ghostDark:hover{box-shadow:none;background:var(--gray-100)}
+.btn-note{margin-top:14px;font-size:.82rem;color:var(--gray-600)}
+.btn-note--onDark{color:rgba(255,255,255,.65)}
+.cta-pair{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.cta-pair.center{justify-content:center}
+@media(max-width:640px){
+  .cta-pair{flex-direction:column;align-items:stretch}
+  .cta-pair .btn{width:100%}
+}
+
+/* ---------- header ---------- */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(8,16,38,.85);backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.header-inner{
+  max-width:var(--maxw);margin:0 auto;padding:14px 24px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+}
+.brand{display:flex;align-items:center;gap:12px;color:#fff}
+.brand-mark{
+  width:44px;height:44px;border-radius:12px;flex:none;
+  background:#fff;padding:5px;
+  display:grid;place-items:center;
+}
+.brand-mark img{width:100%;height:100%;object-fit:contain;display:block}
+.brand-tag{font-size:.68rem;letter-spacing:.28em;color:rgba(255,255,255,.72)}
+.brand-name{font-weight:900;font-size:1.2rem;line-height:1.3}
+.brand-name small{font-size:.62em;font-weight:500;color:rgba(255,255,255,.75);margin-right:.2em}
+.footer-logo{
+  width:76px;height:auto;background:#fff;border-radius:18px;padding:9px;margin-bottom:4px;
+}
+.header-cta{font-size:.92rem;padding:.75em 1.6em;box-shadow:0 4px 14px rgba(244,101,14,.4)}
+@media(max-width:560px){
+  .brand-tag{display:none}
+  .brand-name{font-size:1.05rem}
+  .header-cta{font-size:.8rem;padding:.7em 1.1em;white-space:nowrap}
+}
+@media(max-width:360px){
+  .header-inner{padding:12px 14px;gap:10px}
+  .brand{gap:8px}
+  .brand-mark{width:38px;height:38px;border-radius:10px}
+  .brand-name{font-size:.95rem;white-space:nowrap}
+  .brand-name small{font-size:.72em}
+  .header-cta{font-size:.72rem;padding:.65em .9em}
+  .float-cta .btn{font-size:.9rem}
+  .float-cta .btn--sub{font-size:.78rem;padding:.9em .8em}
+  .float-cta .opt{display:none}
+}
+
+/* ---------- hero ---------- */
+.hero{
+  position:relative;color:#fff;
+  background:
+    radial-gradient(900px 500px at 85% -10%, rgba(244,101,14,.16), transparent 60%),
+    radial-gradient(700px 420px at -10% 110%, rgba(28,47,94,.8), transparent 60%),
+    linear-gradient(160deg,var(--navy-950) 0%,var(--navy-900) 60%,#0D1B3E 100%);
+  padding:150px 0 90px;overflow:hidden;
+}
+.hero::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(rgba(255,255,255,.045) 1px,transparent 1px);
+  background-size:26px 26px;
+}
+.hero .wrap{position:relative;z-index:1}
+.hero-badge{
+  display:inline-block;background:var(--orange);color:#fff;font-weight:700;
+  padding:.45em 1.3em;font-size:.98rem;
+  clip-path:polygon(0 0,100% 0,calc(100% - 14px) 100%,0 100%);
+  margin-bottom:28px;
+}
+.hero h1{
+  font-size:clamp(1.9rem,5.4vw,3.4rem);font-weight:900;line-height:1.4;
+  letter-spacing:.02em;margin-bottom:30px;
+}
+.hero h1 .marker{background:linear-gradient(transparent 62%,rgba(244,101,14,.55) 62%);padding:0 .06em}
+.hero-flip{
+  display:inline-block;background:#fff;color:var(--ink);
+  font-size:clamp(1.15rem,3.2vw,1.9rem);font-weight:900;
+  padding:.55em 1em;border-radius:6px;position:relative;margin-bottom:40px;
+}
+.hero-flip::after{
+  content:"";position:absolute;left:34px;bottom:-14px;
+  border:8px solid transparent;border-top:8px solid #fff;border-left:8px solid #fff;
+}
+.hero-flip .marker{
+  background:linear-gradient(transparent 55%,var(--orange-soft) 55%);
+  padding:0 .08em;
+}
+.hero-sub{font-size:clamp(1rem,2.2vw,1.25rem);font-weight:500;color:rgba(255,255,255,.9)}
+.hero-price{
+  display:flex;align-items:baseline;flex-wrap:wrap;gap:.15em;
+  margin:6px 0 30px;font-weight:900;
+}
+.hero-price .label{font-size:clamp(1.2rem,3vw,1.8rem)}
+.hero-price .num{
+  font-size:clamp(3.2rem,10vw,6.2rem);line-height:1;color:var(--orange);
+  letter-spacing:-.02em;text-shadow:0 6px 30px rgba(244,101,14,.35);
+}
+.hero-price .unit{font-size:clamp(1.3rem,3.4vw,2rem)}
+.hero-price .tax{font-size:.9rem;font-weight:500;color:rgba(255,255,255,.7);margin-left:.6em}
+.hero-stats{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:38px}
+.stat{
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);
+  border-radius:14px;padding:14px 22px;text-align:center;min-width:150px;
+}
+.stat .t{font-size:.8rem;color:rgba(255,255,255,.75)}
+.stat .v{font-size:1.35rem;font-weight:900;color:var(--orange-soft);line-height:1.3}
+.stat .v small{font-size:.62em;color:rgba(255,255,255,.85);font-weight:700;display:inline-block}
+@media(max-width:400px){.stat{min-width:0;flex:1 1 130px;padding:12px 10px}}
+
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:48px;align-items:center}
+.hero-visual{display:flex;justify-content:center}
+.hero-visual svg{width:min(340px,88%);height:auto;filter:drop-shadow(0 26px 50px rgba(0,0,0,.5))}
+@media(max-width:900px){
+  .hero-grid{grid-template-columns:1fr}
+  .hero-visual{margin-top:36px}
+  .hero-visual svg{width:min(260px,72%)}
+}
+
+/* ---------- sections common ---------- */
+section{padding:96px 0}
+@media(max-width:640px){section{padding:72px 0}}
+.sec-head{text-align:center;margin-bottom:56px}
+.sec-num{
+  display:block;font-weight:900;color:var(--orange);letter-spacing:.18em;
+  font-size:.95rem;margin-bottom:10px;
+}
+.sec-num::after{
+  content:"";display:block;width:34px;height:3px;background:var(--orange);
+  margin:12px auto 0;border-radius:2px;
+}
+.sec-title{font-size:clamp(1.45rem,3.6vw,2.2rem);font-weight:900;line-height:1.5;letter-spacing:.02em}
+.sec-lead{max-width:760px;margin:22px auto 0;color:var(--gray-600);font-size:1.02rem;text-align:left}
+@media(min-width:761px){.sec-lead{text-align:center}}
+.on-dark{color:#fff}
+.on-dark .sec-title{color:#fff}
+.on-dark .sec-lead{color:rgba(255,255,255,.78)}
+.center{text-align:center}
+.marker{background:linear-gradient(transparent 60%,#FFD9BC 60%)}
+
+/* ---------- 01 悩み ---------- */
+.sec-nayami{background:var(--white)}
+.nayami-list{max-width:760px;margin:0 auto;display:grid;gap:16px}
+.nayami-item{
+  display:flex;align-items:center;gap:18px;
+  background:var(--gray-100);border-radius:var(--radius);padding:22px 26px;
+  font-weight:700;font-size:1.05rem;border:1px solid #E6EAF2;
+}
+@media(max-width:400px){.nayami-item{padding:18px;gap:12px}}
+.nayami-item .check{
+  flex:none;width:34px;height:34px;border-radius:50%;
+  background:var(--orange);color:#fff;display:grid;place-items:center;
+  font-size:1rem;font-weight:900;box-shadow:0 4px 12px rgba(244,101,14,.35);
+}
+.nayami-close{
+  text-align:center;margin-top:38px;font-weight:700;font-size:1.12rem;
+}
+
+/* ---------- 02 なぜLP ---------- */
+.sec-why{background:linear-gradient(165deg,var(--navy-900),var(--navy-800))}
+.why-compare{
+  max-width:860px;margin:0 auto;display:grid;
+  grid-template-columns:1fr auto 1fr;gap:18px;align-items:stretch;
+}
+@media(max-width:720px){.why-compare{grid-template-columns:1fr}}
+.why-panel{
+  background:#fff;border-radius:var(--radius);padding:24px 22px;color:var(--ink);
+  box-shadow:0 20px 50px rgba(0,0,0,.35);display:flex;flex-direction:column;gap:14px;
+}
+.why-panel .ttl{font-weight:900;font-size:1.05rem;text-align:center}
+.why-panel .ttl.lose{color:var(--gray-600)}
+.why-panel svg{display:block;width:100%;max-width:300px;height:auto;margin:0 auto}
+.why-panel .cap{font-size:.9rem;font-weight:700;text-align:center}
+.why-panel .cap.lose{color:#94A3B8}
+.why-panel .cap.win{color:var(--orange)}
+.why-vs{
+  align-self:center;justify-self:center;
+  width:52px;height:52px;border-radius:50%;background:var(--orange);color:#fff;
+  display:grid;place-items:center;font-weight:900;font-size:1.05rem;
+  box-shadow:0 8px 20px rgba(244,101,14,.4);
+}
+.why-points{
+  max-width:860px;margin:34px auto 0;display:grid;grid-template-columns:1fr 1fr;gap:18px;
+}
+@media(max-width:720px){.why-points{grid-template-columns:1fr}}
+.why-point{
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);
+  border-radius:14px;padding:22px 24px;font-size:.96rem;color:rgba(255,255,255,.85);
+}
+.why-point strong{color:var(--orange-soft)}
+
+/* ---------- 03 サンプル ---------- */
+.sec-samples{background:var(--gray-100)}
+.sample-grid{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:18px;max-width:1020px;margin:0 auto;
+}
+@media(max-width:960px){.sample-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:640px){.sample-grid{grid-template-columns:repeat(2,1fr);gap:14px}}
+.sample-card{
+  display:block;background:#fff;border-radius:14px;overflow:hidden;
+  box-shadow:var(--shadow);border:1px solid #E6EAF2;
+  transition:transform .2s ease,box-shadow .2s ease;
+}
+.sample-card:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(11,22,51,.16)}
+.sample-card svg{display:block;width:100%;height:auto}
+.sample-card .meta{display:block;padding:12px 14px 14px}
+.sample-card .name{display:block;font-weight:900;font-size:.95rem;line-height:1.4}
+.sample-card .mood{display:block;font-size:.78rem;color:var(--gray-600);margin-top:2px}
+.sample-card .view{
+  display:inline-block;margin-top:8px;font-size:.8rem;font-weight:700;color:var(--orange);
+}
+.sample-note{max-width:760px;margin:30px auto 0;text-align:center;font-weight:700;font-size:1.08rem}
+
+/* ---------- 04 理由 ---------- */
+.sec-reason{background:var(--white)}
+.reason-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+@media(max-width:960px){.reason-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.reason-grid{grid-template-columns:1fr}}
+.reason-card{
+  background:var(--gray-100);border-radius:var(--radius);padding:32px 28px;
+  border:1px solid #E6EAF2;
+}
+.reason-card .badge{
+  display:inline-grid;place-items:center;width:48px;height:48px;border-radius:50%;
+  background:var(--navy-900);color:var(--orange-soft);font-weight:900;font-size:1.2rem;
+  margin-bottom:18px;
+}
+.reason-card h3{font-size:1.1rem;font-weight:900;margin-bottom:12px;line-height:1.6}
+.reason-card p{font-size:.95rem;color:var(--gray-600)}
+.proof-band{
+  max-width:860px;margin:44px auto 0;background:var(--navy-900);border-radius:var(--radius);
+  padding:30px 30px;color:#fff;display:grid;grid-template-columns:1fr 1fr;gap:20px;
+}
+@media(max-width:720px){.proof-band{grid-template-columns:1fr;padding:26px 22px}}
+.proof-item .t{font-size:.82rem;color:rgba(255,255,255,.7);margin-bottom:4px}
+.proof-item .v{font-weight:900;font-size:1.12rem;line-height:1.6}
+.proof-item .v .accent{color:var(--orange-soft)}
+.proof-item .note{font-size:.78rem;color:rgba(255,255,255,.55);margin-top:4px}
+
+/* ---------- 05 料金 ---------- */
+.sec-price{background:linear-gradient(165deg,var(--navy-900),var(--navy-800))}
+.plan-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1020px;margin:0 auto;
+  align-items:stretch;
+}
+@media(max-width:920px){.plan-grid{grid-template-columns:1fr;max-width:520px}}
+.plan-card{
+  position:relative;background:#fff;border-radius:var(--radius);overflow:hidden;
+  box-shadow:0 20px 50px rgba(0,0,0,.35);color:var(--ink);
+  display:flex;flex-direction:column;
+}
+.plan-card .head{
+  background:var(--navy-800);color:#fff;text-align:center;padding:20px 16px 18px;
+  font-weight:900;font-size:1.05rem;line-height:1.5;
+}
+.plan-card .head small{
+  display:block;font-size:.7rem;font-weight:700;color:rgba(255,255,255,.72);
+  letter-spacing:.22em;margin-bottom:4px;
+}
+.plan-card .body{
+  padding:26px 22px 30px;text-align:center;
+  display:flex;flex-direction:column;flex:1;
+}
+@media(max-width:400px){.plan-card .body{padding:24px 16px 28px}}
+.plan-price{font-weight:900;line-height:1.1}
+.plan-price .num{font-size:clamp(2.3rem,7vw,3rem);color:var(--navy-800);letter-spacing:-.02em}
+.plan-price .unit{font-size:1.2rem}
+.plan-price .tax{display:block;font-size:.8rem;font-weight:500;color:var(--gray-600);margin-top:6px}
+.price-badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:16px 0 20px}
+.price-badge{
+  background:#FFF1E7;color:#B24A08;font-weight:700;font-size:.8rem;
+  border-radius:999px;padding:.35em 1em;border:1px solid #FFD9BC;
+}
+.include-list{
+  text-align:left;margin:0 auto;display:grid;gap:10px;font-size:.92rem;font-weight:700;width:100%;
+  align-content:start;
+}
+.include-list li{list-style:none;display:flex;gap:10px;align-items:flex-start}
+.include-list .ic{color:var(--orange);font-weight:900;flex:none}
+.include-list li.ng{color:var(--gray-600);font-weight:500}
+.include-list li.ng .ic{color:#B0B7C3}
+.plan-card--reco{border:3px solid var(--orange);box-shadow:0 24px 60px rgba(244,101,14,.3)}
+.plan-card--reco .head{background:linear-gradient(180deg,#FF7A24,var(--orange));padding-top:34px}
+.plan-card--reco .plan-price .num{color:var(--orange)}
+@media(min-width:921px){.plan-card--reco,.plan-card--reco.reveal.is-visible{transform:scale(1.045)}}
+@media(max-width:920px){.plan-card--reco{order:-1}}
+.plan-ribbon{
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  background:#fff;color:var(--orange-dark);font-weight:900;font-size:.78rem;
+  padding:.3em 1.3em;border-radius:0 0 10px 10px;white-space:nowrap;
+  box-shadow:0 4px 12px rgba(0,0,0,.18);
+}
+.plan-link{
+  display:inline-block;margin-top:14px;font-size:.88rem;font-weight:700;color:var(--orange);
+  text-decoration:underline;text-underline-offset:3px;padding:8px 4px;
+}
+.cost-note{
+  max-width:1020px;margin:28px auto 0;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);
+  border-radius:14px;padding:22px 24px;color:rgba(255,255,255,.85);font-size:.92rem;
+}
+.cost-note .t{font-weight:900;color:#fff;margin-bottom:8px;font-size:.98rem}
+.cost-note .t::before{content:"¥ ";color:var(--orange-soft);font-weight:900}
+.cost-note ul{list-style:none;display:flex;gap:8px 26px;flex-wrap:wrap;font-weight:700;margin-bottom:8px}
+.cost-note li::before{content:"・";color:var(--orange-soft)}
+.cost-note .sub{font-size:.82rem;color:rgba(255,255,255,.65)}
+.price-note{max-width:1020px;margin:18px auto 0;font-size:.85rem;color:rgba(255,255,255,.7);text-align:left}
+
+/* ---------- 06 流れ ---------- */
+.sec-flow{background:var(--white)}
+.flow-list{max-width:820px;margin:0 auto;display:grid;gap:0}
+.flow-item{
+  display:flex;gap:22px;align-items:flex-start;position:relative;padding-bottom:34px;
+}
+.flow-item:last-child{padding-bottom:0}
+.flow-item::before{
+  content:"";position:absolute;left:26px;top:56px;bottom:6px;width:3px;
+  background:#E6EAF2;border-radius:2px;
+}
+.flow-item:last-child::before{display:none}
+.flow-item .no{
+  flex:none;width:52px;height:52px;border-radius:16px;background:var(--navy-900);
+  color:var(--orange-soft);font-weight:900;font-size:1.25rem;display:grid;place-items:center;
+  box-shadow:var(--shadow);position:relative;z-index:1;
+}
+.flow-item h3{font-size:1.12rem;font-weight:900;margin-bottom:6px}
+.flow-item h3 .who{
+  display:inline-block;font-size:.72rem;font-weight:700;border-radius:999px;
+  padding:.15em .9em;margin-left:.6em;vertical-align:middle;
+}
+.flow-item h3 .who.you{background:#FFF1E7;color:#B24A08;border:1px solid #FFD9BC}
+.flow-item h3 .who.us{background:var(--gray-100);color:var(--gray-600);border:1px solid #E6EAF2}
+.flow-item p{color:var(--gray-600);font-size:.96rem}
+@media(max-width:480px){
+  .flow-item{gap:14px}
+  .flow-item .no{width:44px;height:44px;border-radius:13px;font-size:1.1rem}
+  .flow-item::before{left:22px;top:50px}
+}
+
+/* ---------- 07 FAQ ---------- */
+.sec-faq{background:var(--gray-100)}
+.faq-list{max-width:820px;margin:0 auto;display:grid;gap:14px}
+details.faq{
+  background:#fff;border-radius:14px;box-shadow:var(--shadow);
+  overflow:hidden;border:1px solid #E6EAF2;
+}
+details.faq summary{
+  list-style:none;cursor:pointer;display:flex;align-items:center;gap:16px;
+  padding:22px 24px;font-weight:700;font-size:1.02rem;min-height:48px;
+}
+details.faq summary::-webkit-details-marker{display:none}
+details.faq summary .q{
+  flex:none;width:32px;height:32px;border-radius:10px;background:var(--orange);
+  color:#fff;font-weight:900;display:grid;place-items:center;font-size:.95rem;
+}
+details.faq summary .toggle{
+  margin-left:auto;flex:none;color:var(--orange);font-size:1.3rem;font-weight:900;
+  transition:transform .25s ease;
+}
+details.faq[open] summary .toggle{transform:rotate(45deg)}
+details.faq .a{
+  padding:0 24px 24px 72px;color:var(--gray-600);font-size:.96rem;
+}
+@media(max-width:560px){details.faq .a{padding-left:24px}}
+
+/* ---------- 08 会社概要 ---------- */
+.sec-company{background:var(--white)}
+.company-table{
+  max-width:680px;margin:0 auto;border:1px solid #E6EAF2;border-radius:var(--radius);
+  overflow:hidden;box-shadow:var(--shadow);
+}
+.company-row{display:grid;grid-template-columns:160px 1fr;border-bottom:1px solid #EDF0F6}
+.company-row:last-child{border-bottom:none}
+.company-row .th{
+  background:var(--gray-100);font-weight:700;padding:18px 20px;font-size:.95rem;
+}
+.company-row .td{padding:18px 20px;font-size:.95rem;color:var(--gray-600)}
+.company-row .td a{
+  color:var(--orange);text-decoration:underline;text-underline-offset:3px;word-break:break-all;
+  display:inline-block;padding:10px 2px;margin:-6px 0;
+}
+@media(max-width:480px){
+  .company-row{grid-template-columns:1fr}
+  .company-row .th{padding:12px 18px 4px;background:none;color:var(--navy-800);font-size:.85rem}
+  .company-row .td{padding:0 18px 14px}
+}
+
+/* ---------- final CTA ---------- */
+.sec-contact{
+  background:
+    radial-gradient(800px 400px at 50% -20%, rgba(244,101,14,.2), transparent 60%),
+    linear-gradient(170deg,var(--navy-950),var(--navy-900));
+  text-align:center;padding:110px 0;
+}
+.sec-contact h2{
+  color:#fff;font-size:clamp(1.6rem,4.4vw,2.6rem);font-weight:900;margin-bottom:24px;
+}
+.sec-contact .lead{
+  max-width:720px;margin:0 auto 42px;color:rgba(255,255,255,.82);font-size:1.02rem;text-align:left;
+}
+@media(min-width:721px){.sec-contact .lead{text-align:center}}
+.form-steps{
+  display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:42px;
+}
+.form-step{
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);
+  color:#fff;border-radius:12px;padding:12px 20px;font-size:.9rem;font-weight:700;
+  display:flex;align-items:center;gap:10px;
+}
+.form-step .n{
+  width:24px;height:24px;border-radius:50%;background:var(--orange);
+  display:grid;place-items:center;font-size:.78rem;flex:none;
+}
+.form-step.sep{background:none;border:none;padding:12px 0;color:var(--orange-soft);font-size:1.1rem}
+
+/* ---------- footer ---------- */
+footer{background:var(--navy-950);color:rgba(255,255,255,.75);padding:56px 0;text-align:center}
+footer .brand{justify-content:center;margin-bottom:20px;flex-direction:column;gap:6px}
+footer .addr{font-size:.85rem;line-height:2}
+footer .copy{margin-top:22px;font-size:.78rem;color:rgba(255,255,255,.45)}
+.footer-contact{font-size:.88rem;margin-top:6px}
+.footer-contact a{
+  color:var(--orange-soft);text-decoration:underline;text-underline-offset:3px;word-break:break-all;
+  display:inline-block;padding:10px 4px;
+}
+.footer-links{display:flex;gap:2px 18px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.footer-links a{
+  color:rgba(255,255,255,.85);font-size:.85rem;text-decoration:underline;text-underline-offset:3px;
+  display:inline-block;padding:11px 6px;
+}
+
+/* ---------- floating CTA (mobile) ---------- */
+.float-cta{
+  position:fixed;left:0;right:0;bottom:0;z-index:90;padding:12px 16px;
+  background:rgba(8,16,38,.9);backdrop-filter:blur(8px);
+  border-top:1px solid rgba(255,255,255,.1);
+  display:none;
+}
+.float-cta .inner{display:flex;gap:10px;max-width:480px;margin:0 auto}
+.float-cta .btn{flex:1 1 auto;font-size:.95rem;padding:.9em .5em;min-height:48px;gap:0}
+.float-cta .btn--sub{
+  flex:0 0 auto;background:#fff;color:var(--navy-800);box-shadow:none;
+  font-size:.85rem;padding:.9em 1em;
+}
+@media(max-width:640px){
+  .float-cta{display:block}
+  body{padding-bottom:80px}
+}
+</style>
+
+<style>
+/* ---------- 実画面スクショ ---------- */
+.shot-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:1020px;margin:0 auto}
+@media(max-width:920px){.shot-grid{grid-template-columns:repeat(2,1fr)}}
+.shot-card{background:#fff;border-radius:18px;border:1px solid #E6EAF2;box-shadow:var(--shadow);overflow:hidden}
+.shot-card .ph{background:#060C20;padding:10px 10px 0;border-radius:18px 18px 0 0}
+.shot-card .ph img{display:block;width:100%;height:290px;object-fit:cover;object-position:top;border-radius:10px 10px 0 0}
+.shot-card .cap{padding:14px 16px;font-size:.88rem;font-weight:700;line-height:1.6}
+.shot-card .cap small{display:block;font-weight:500;color:var(--gray-600);margin-top:2px;font-size:.9em}
+.shot-note{max-width:760px;margin:26px auto 0;text-align:center;font-size:.85rem;color:var(--gray-600)}
+</style>
+
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="brand" href="#top">
+      <span class="brand-mark"><img src="assets/shittoru_logo.png" alt="株式会社しっとる ロゴ"></span>
+      <span>
+        <span class="brand-tag">SNS集客のパートナー</span><br>
+        <span class="brand-name"><small>株式会社</small>しっとる</span>
+      </span>
+    </a>
+    <a class="btn header-cta" href="mailto:shittoru@s-toru.com?subject=%E5%8F%A3%E3%82%B3%E3%83%9F%E4%BD%9C%E6%88%90%E3%82%A2%E3%83%97%E3%83%AA%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">無料相談する</a>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<main id="top">
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <span class="hero-badge">治療院・サロン・教室など 店舗オーナー様へ</span>
+        <h1>口コミのお願い、<br>「よかったら書いてくださいね」で<br><span class="marker">終わっていませんか？</span></h1>
+        <div class="hero-flip">あなたのお店専用の<span class="marker">「口コミ作成アプリ」</span>、作ります。</div>
+        <p class="hero-sub">お客様は質問に答えるだけ。AIがGoogleマップ用の口コミ下書きを3案作成し、コピーして貼り付けるだけで投稿できる状態にします。書く手間が減るから、お願いが「投稿」まで届きます。</p>
+        <div class="hero-stats" style="margin-top:26px">
+          <div class="stat"><div class="t">お客様の操作</div><div class="v">質問に答える<small>だけ（1〜2分）</small></div></div>
+          <div class="stat"><div class="t">実画面</div><div class="v">公開中<small> 稼働中の店舗アプリ</small></div></div>
+          <div class="stat"><div class="t">ご相談</div><div class="v">無料</div></div>
+        </div>
+        <div class="cta-pair">
+          <a class="btn btn--lg" href="mailto:shittoru@s-toru.com?subject=%E5%8F%A3%E3%82%B3%E3%83%9F%E4%BD%9C%E6%88%90%E3%82%A2%E3%83%97%E3%83%AA%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">無料相談する<span class="arrow">→</span></a>
+          <a class="btn btn--lg btn--ghost" href="#jitsuga">実際の画面を見る</a>
+        </div>
+        <p class="btn-note btn-note--onDark">メール1通でOK。しつこい営業は一切ありません</p>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <svg viewBox="0 0 400 620" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans JP',sans-serif">
+          <defs>
+            <linearGradient id="hp-scr" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#1C2F5E"/><stop offset="1" stop-color="#0B1633"/>
+            </linearGradient>
+          </defs>
+          <rect x="50" y="40" width="300" height="560" rx="46" fill="#060C20" stroke="#3A4A78" stroke-width="3"/>
+          <rect x="63" y="53" width="274" height="534" rx="36" fill="url(#hp-scr)"/>
+          <rect x="160" y="66" width="80" height="10" rx="5" fill="#060C20"/>
+          <!-- 質問チップ -->
+          <rect x="78" y="96" width="244" height="34" rx="10" fill="#13224A"/>
+          <text x="92" y="119" fill="#fff" font-size="13" font-weight="bold">来店の目的は？</text>
+          <rect x="78" y="140" width="76" height="28" rx="14" fill="#F4650E"/>
+          <text x="90" y="159" fill="#fff" font-size="12" font-weight="bold">肩こり</text>
+          <rect x="162" y="140" width="64" height="28" rx="14" fill="rgba(255,255,255,.14)"/>
+          <text x="174" y="159" fill="#fff" font-size="12">腰痛</text>
+          <rect x="234" y="140" width="88 " height="28" rx="14" fill="rgba(255,255,255,.14)"/>
+          <text x="246" y="159" fill="#fff" font-size="12">姿勢改善</text>
+          <rect x="78" y="180" width="244" height="34" rx="10" fill="#13224A"/>
+          <text x="92" y="203" fill="#fff" font-size="13" font-weight="bold">満足度は？</text>
+          <rect x="78" y="224" width="104" height="28" rx="14" fill="#F4650E"/>
+          <text x="90" y="243" fill="#fff" font-size="12" font-weight="bold">とても満足</text>
+          <!-- 矢印 -->
+          <path d="M200 268 V296" stroke="#F4650E" stroke-width="5" stroke-linecap="round"/>
+          <path d="M188 290 L200 308 L212 290 Z" fill="#F4650E"/>
+          <!-- AI下書き -->
+          <rect x="78" y="318" width="244" height="150" rx="14" fill="#fff"/>
+          <text x="92" y="344" fill="#1A2233" font-size="13" font-weight="bold">AIが下書きを作成</text>
+          <rect x="92" y="356" width="216" height="8" rx="4" fill="#C9D2E3"/>
+          <rect x="92" y="372" width="216" height="8" rx="4" fill="#C9D2E3"/>
+          <rect x="92" y="388" width="180" height="8" rx="4" fill="#C9D2E3"/>
+          <rect x="92" y="404" width="204" height="8" rx="4" fill="#C9D2E3"/>
+          <rect x="92" y="428" width="120" height="26" rx="13" fill="#22B573"/>
+          <text x="104" y="446" fill="#fff" font-size="12" font-weight="bold">コピーして投稿</text>
+          <!-- Googleマップへ -->
+          <rect x="92" y="500" width="216" height="48" rx="24" fill="#F4650E"/>
+          <text x="118" y="530" fill="#fff" font-size="15" font-weight="bold">Googleマップで投稿</text>
+          <path d="M352 150 l4 9 9 4 -9 4 -4 9 -4-9 -9-4 9-4 z" fill="#FFB27A"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 01 悩み ================= -->
+<section class="sec-nayami">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">01</span>
+      <h2 class="sec-title">口コミの、こんなお悩みありませんか？</h2>
+    </div>
+    <div class="nayami-list">
+      <div class="nayami-item reveal"><span class="check">✔</span>口コミをお願いしても、「あとで書きますね」のまま書かれずに終わる</div>
+      <div class="nayami-item reveal"><span class="check">✔</span>「何を書けばいいか分からない」と言われてしまう</div>
+      <div class="nayami-item reveal"><span class="check">✔</span>星だけの評価が多く、内容のある口コミがなかなか増えない</div>
+      <div class="nayami-item reveal"><span class="check">✔</span>お店を選ぶとき口コミが見られているのは分かっているのに、打ち手がない</div>
+    </div>
+    <p class="nayami-close reveal">書かれない一番の理由は、悪意ではなく<span class="marker">「文章を書くのが面倒」</span>だからです。</p>
+    <div class="center reveal" style="margin-top:34px">
+      <a class="btn" href="mailto:shittoru@s-toru.com?subject=%E5%8F%A3%E3%82%B3%E3%83%9F%E4%BD%9C%E6%88%90%E3%82%A2%E3%83%97%E3%83%AA%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">うちの場合はどう？とメールで聞いてみる<span class="arrow">→</span></a>
+      <p class="btn-note">無料相談・オンライン対応。もちろん相談だけでもOKです</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 02 なぜアプリ ================= -->
+<section class="sec-why on-dark">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">02</span>
+      <h2 class="sec-title">「書いてください」ではなく、「答えるだけ」にする</h2>
+      <p class="sec-lead">口コミが書かれないのは、白紙の投稿欄を前に「何をどう書けばいいか」を考えるのが大変だからです。口コミ作成アプリは、その一番重いところをAIが肩代わりします。お客様は選択肢をタップして質問に答えるだけ。実際の体験に基づいた下書きが完成し、コピーしてGoogleマップに貼り付ければ投稿できます。</p>
+    </div>
+    <div class="why-compare reveal">
+      <div class="why-panel">
+        <div class="ttl lose">口頭やカードでお願い＝白紙から書く</div>
+        <svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="75" y="5" width="150" height="200" rx="12" fill="#F2F5FB" stroke="#DDE4F0" stroke-width="2"/>
+          <rect x="89" y="19" width="122" height="120" rx="7" fill="#fff" stroke="#DDE4F0" stroke-width="2"/>
+          <text x="112" y="80" fill="#94A3B8" font-size="13" font-family="'Noto Sans JP',sans-serif">（白紙…）</text>
+          <rect x="89" y="150" width="122" height="30" rx="15" fill="#C9D2E3"/>
+          <text x="118" y="170" fill="#64748B" font-size="13" font-weight="bold" font-family="'Noto Sans JP',sans-serif">投稿する</text>
+        </svg>
+        <div class="cap lose">「何を書けば…」で手が止まり、そのまま忘れられる</div>
+      </div>
+      <div class="why-vs" aria-hidden="true">VS</div>
+      <div class="why-panel">
+        <div class="ttl">口コミ作成アプリ＝タップで答えるだけ</div>
+        <svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="75" y="5" width="150" height="200" rx="12" fill="#13224A"/>
+          <rect x="89" y="19" width="56" height="24" rx="12" fill="#F4650E"/>
+          <rect x="153" y="19" width="58" height="24" rx="12" fill="rgba(255,255,255,.14)"/>
+          <rect x="89" y="51" width="70" height="24" rx="12" fill="#F4650E"/>
+          <rect x="167" y="51" width="44" height="24" rx="12" fill="rgba(255,255,255,.14)"/>
+          <rect x="89" y="87" width="122" height="66" rx="8" fill="#fff"/>
+          <rect x="98" y="97" width="104" height="7" rx="3.5" fill="#C9D2E3"/>
+          <rect x="98" y="110" width="104" height="7" rx="3.5" fill="#C9D2E3"/>
+          <rect x="98" y="123" width="80" height="7" rx="3.5" fill="#C9D2E3"/>
+          <rect x="95" y="166" width="110" height="30" rx="15" fill="#F4650E"/>
+          <text x="106" y="186" fill="#fff" font-size="13" font-weight="bold" font-family="'Noto Sans JP',sans-serif">コピーして投稿</text>
+        </svg>
+        <div class="cap win">答える→下書き完成→貼り付けるだけ</div>
+      </div>
+    </div>
+    <div class="why-points">
+      <div class="why-point reveal"><strong>内容のある口コミになる</strong>——来店目的・受けたメニュー・感想が自然に盛り込まれるので、星だけで終わらない、これから来る方の参考になる口コミになります。</div>
+      <div class="why-point reveal"><strong>その場でお願いできる</strong>——お会計のときにQRコードを見せるだけ。「帰ってから」ではなく、体験が新しいうちに書いていただけます。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 03 実画面 ================= -->
+<section class="sec-samples" id="jitsuga">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">03</span>
+      <h2 class="sec-title">実際に店舗で稼働中の画面です</h2>
+      <p class="sec-lead">イメージ図ではありません。岡山県の整体・ピラティス店舗（2店舗）で実際に運用されている口コミ作成アプリの実画面です。ご契約後は、これと同じ仕組みをあなたのお店のメニュー・ブランドに合わせて作り込みます。</p>
+    </div>
+    <div class="shot-grid">
+      <div class="shot-card reveal">
+        <div class="ph"><img src="assets/01_top.png" alt="口コミ作成アプリの実画面: 利用規約と実体験の確認"></div>
+        <div class="cap">1. はじめに確認<small>実体験に基づくこと・店舗関係者でないことを最初に確認します</small></div>
+      </div>
+      <div class="shot-card reveal">
+        <div class="ph"><img src="assets/02_steps.png" alt="口コミ作成アプリの実画面: メニューと来店目的を選択"></div>
+        <div class="cap">2. 質問に答える<small>メニュー・来店目的・満足度などをタップで選択。自由入力も可能</small></div>
+      </div>
+      <div class="shot-card reveal">
+        <div class="ph"><img src="assets/03_result.png" alt="口コミ作成アプリの実画面: AIが3案の下書きを作成"></div>
+        <div class="cap">3. AIが下書きを3案作成<small>気に入った案を選んで、自分の言葉に自由に編集できます</small></div>
+      </div>
+      <div class="shot-card reveal">
+        <div class="ph"><img src="assets/04_post.png" alt="口コミ作成アプリの実画面: コピーしてGoogleマップへ"></div>
+        <div class="cap">4. コピーして投稿<small>本文が自動コピーされ、Googleマップの投稿画面が開きます</small></div>
+      </div>
+    </div>
+    <p class="shot-note reveal">※画面は実際に稼働中の導入店舗のものです。デザイン・質問項目・メニューは、お店に合わせて変更して制作します。</p>
+    <div class="center reveal" style="margin-top:30px">
+      <a class="btn btn--lg" href="mailto:shittoru@s-toru.com?subject=%E5%8F%A3%E3%82%B3%E3%83%9F%E4%BD%9C%E6%88%90%E3%82%A2%E3%83%97%E3%83%AA%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">うちのお店用に作ってもらう<span class="arrow">→</span></a>
+      <p class="btn-note">まずは無料相談から。デモ画面のご案内もできます</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 04 特長 ================= -->
+<section class="sec-reason">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">04</span>
+      <h2 class="sec-title">しっとるの口コミ作成アプリ、6つの特長</h2>
+    </div>
+    <div class="reason-grid">
+      <div class="reason-card reveal">
+        <span class="badge">1</span>
+        <h3>あなたのお店専用に作り込み</h3>
+        <p>メニュー・来店目的の選択肢・店名・地域名・デザインの雰囲気まで、お店に合わせて制作。汎用ツールの使い回しではありません。</p>
+      </div>
+      <div class="reason-card reveal">
+        <span class="badge">2</span>
+        <h3>ステマ規制・Googleのポリシーに配慮した設計</h3>
+        <p>実体験の確認・店舗関係者の除外チェックを最初に必須化。書く内容の指定や見返りの提供はしない前提で、低い評価の方を排除しない設計です。安心して長く使えます。</p>
+      </div>
+      <div class="reason-card reveal">
+        <span class="badge">3</span>
+        <h3>禁止表現チェックを内蔵</h3>
+        <p>「必ず治る」などの断定表現やNGキーワードを自動チェック。治療院・サロンで問題になりやすい表現を、投稿前に2段階で確認します。</p>
+      </div>
+      <div class="reason-card reveal">
+        <span class="badge">4</span>
+        <h3>最後はお客様自身の言葉で</h3>
+        <p>AIの下書きは3案から選べて、自由に編集できます。最終的に投稿するかどうか・どんな文章にするかは、必ずお客様自身が決める流れです。</p>
+      </div>
+      <div class="reason-card reveal">
+        <span class="badge">5</span>
+        <h3>地域名入りで検索にも効く</h3>
+        <p>下書きには地域名・メニュー名が自然に入ります。内容のある口コミは、Googleマップで近隣のお客様に見つけてもらう力になります。</p>
+      </div>
+      <div class="reason-card reveal">
+        <span class="badge">6</span>
+        <h3>QRコード・LINE配信でそのまま使える</h3>
+        <p>専用URLを発行するので、レジ横のQRカード・公式LINEの配信・お礼メッセージにそのまま載せられます。使い方のご案内まで含めてお渡しします。</p>
+      </div>
+    </div>
+    <div class="proof-band reveal">
+      <div class="proof-item">
+        <div class="t">自社グループ店舗で実運用中</div>
+        <div class="v">上でご覧いただいた画面は、<span class="accent">実際の店舗で今日も動いている本物</span>です。運用して見つかった改善点は、制作するアプリにも反映されます。</div>
+      </div>
+      <div class="proof-item">
+        <div class="t">店舗集客の支援会社が作ります</div>
+        <div class="v">LP制作・Instagram広告運用・LINE構築など、<span class="accent">店舗集客をまるごと支援している会社</span>が、集客導線の一部として設計します。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 05 料金 ================= -->
+<section class="sec-price on-dark">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2 class="sec-title">料金は、無料相談でご案内します。</h2>
+      <p class="sec-lead">質問項目の数・デザインの作り込み・店舗数によって最適な構成が変わるため、まずはお店の状況を伺ったうえで、お見積もりを無料でご提示します。「見積もりを見てから決める」で大丈夫です。</p>
+    </div>
+    <div class="center reveal">
+      <a class="btn btn--lg" href="mailto:shittoru@s-toru.com?subject=%E5%8F%A3%E3%82%B3%E3%83%9F%E4%BD%9C%E6%88%90%E3%82%A2%E3%83%97%E3%83%AA%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">無料相談して見積もりをもらう<span class="arrow">→</span></a>
+      <p class="btn-note btn-note--onDark">「まず話だけ聞きたい」でも大歓迎です</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 06 流れ ================= -->
+<section class="sec-flow">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">05</span>
+      <h2 class="sec-title">導入の流れは、たったの4ステップ</h2>
+      <p class="sec-lead">お客様にしていただくのは、最初のヒアリングにお答えいただくことだけ。あとはお任せください。</p>
+    </div>
+    <div class="flow-list">
+      <div class="flow-item reveal">
+        <span class="no">1</span>
+        <div>
+          <h3>伝える<span class="who you">お客様</span></h3>
+          <p>店名・地域・メニュー・お客様がよく話す来店目的などを教えてください。メールやオンラインでのヒアリングでOKです。</p>
+        </div>
+      </div>
+      <div class="flow-item reveal">
+        <span class="no">2</span>
+        <div>
+          <h3>設計・制作<span class="who us">おまかせ</span></h3>
+          <p>お店に合わせて質問項目・選択肢・デザインを設計し、専用の口コミ作成アプリを制作します。</p>
+        </div>
+      </div>
+      <div class="flow-item reveal">
+        <span class="no">3</span>
+        <div>
+          <h3>確認<span class="who you">お客様</span></h3>
+          <p>実際の画面をスマホで触って確認していただきます。選択肢の言い回しなど、気になるところは調整します。</p>
+        </div>
+      </div>
+      <div class="flow-item reveal">
+        <span class="no">4</span>
+        <div>
+          <h3>公開・運用開始<span class="who us">おまかせ</span></h3>
+          <p>専用URLとQRコードをお渡しして公開。レジ横カードやLINEでの案内方法まで、使い方をセットでご案内します。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 07 FAQ ================= -->
+<section class="sec-faq">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">06</span>
+      <h2 class="sec-title">よくあるご質問</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq reveal">
+        <summary><span class="q">Q</span>やらせ・サクラにはなりませんか？<span class="toggle">＋</span></summary>
+        <div class="a">なりません。このアプリは「実際に来店したお客様が、実体験を書きやすくする」ための道具です。利用の最初に、実体験に基づくこと・店舗関係者でないことを必ず確認し、書く内容の指定や見返りの提供はしない前提で設計しています。最終的な文章はお客様自身が編集し、投稿するかどうかもお客様が決めます。</div>
+      </details>
+      <details class="faq reveal">
+        <summary><span class="q">Q</span>Googleのルール的に大丈夫ですか？<span class="toggle">＋</span></summary>
+        <div class="a">Googleは「見返りを提供して口コミを集めること」「特定の内容を書くよう求めること」「低い評価の人だけ投稿させないようにすること」を禁止しています。このアプリはいずれも行いません。満足度が低い方にも同じように下書きを作成し、率直なご感想として投稿していただける、ポリシーに配慮した設計です。</div>
+      </details>
+      <details class="faq reveal">
+        <summary><span class="q">Q</span>お客様はアプリのインストールが必要ですか？<span class="toggle">＋</span></summary>
+        <div class="a">不要です。QRコードを読み取るとブラウザでそのまま開くWebアプリなので、インストールも会員登録もいりません。スマホだけで完結します。</div>
+      </details>
+      <details class="faq reveal">
+        <summary><span class="q">Q</span>どうやってお客様に案内すればいいですか？<span class="toggle">＋</span></summary>
+        <div class="a">一番効果的なのは、お会計のときの「よろしければ、こちらから1〜2分で書けます」というひと言＋QRコードのご提示です。公式LINEをお使いのお店なら、来店後のお礼メッセージにURLを載せる方法もご案内します。</div>
+      </details>
+      <details class="faq reveal">
+        <summary><span class="q">Q</span>治療院ですが、表現のルールは大丈夫ですか？<span class="toggle">＋</span></summary>
+        <div class="a">「必ず治る」などの断定表現を避けるよう下書きの段階で制御し、さらに投稿前に禁止キーワードの自動チェックを行います。医療広告ガイドラインや景品表示法に配慮した設計です。</div>
+      </details>
+      <details class="faq reveal">
+        <summary><span class="q">Q</span>口コミは必ず増えますか？<span class="toggle">＋</span></summary>
+        <div class="a">正直にお伝えすると、件数をお約束することはできません。口コミはあくまでお客様の自由意思によるものだからです。弊社がお約束できるのは、「書きたいけれど面倒で書かれなかった」というお客様の負担を大きく減らす道具を、規制に配慮した形でご提供することです。</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 08 会社概要 ================= -->
+<section class="sec-company">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">07</span>
+      <h2 class="sec-title">会社概要</h2>
+    </div>
+    <div class="company-table reveal">
+      <div class="company-row"><div class="th">会社名</div><div class="td">株式会社しっとる</div></div>
+      <div class="company-row"><div class="th">所在地</div><div class="td">〒700-0901 岡山県岡山市北区本町6-36 第一セントラルビル4階</div></div>
+      <div class="company-row"><div class="th">事業内容</div><div class="td">店舗ビジネスのSNS集客支援（口コミ作成アプリ制作、LP制作、Instagram広告運用代行 ほか）</div></div>
+      <div class="company-row"><div class="th">お問い合わせ</div><div class="td"><a href="mailto:shittoru@s-toru.com?subject=%E5%8F%A3%E3%82%B3%E3%83%9F%E4%BD%9C%E6%88%90%E3%82%A2%E3%83%97%E3%83%AA%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">shittoru@s-toru.com</a></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 最終CTA ================= -->
+<section class="sec-contact" id="contact">
+  <div class="wrap">
+    <h2 class="reveal">まずは、無料相談から。</h2>
+    <p class="lead reveal">「うちの業種でも作れる？」「Googleのルールが心配」——そんな素朴な疑問だけでも大歓迎です。メール1通お送りいただければ、貴店のメニュー・お客様層に合わせたご提案とお見積もりを無料でお返しします。オンライン対応なので全国どこからでもご相談いただけます。</p>
+    <div class="form-steps reveal">
+      <span class="form-step"><span class="n">1</span>メールで相談<br>（1通でOK）</span>
+      <span class="form-step sep">→</span>
+      <span class="form-step"><span class="n">2</span>担当者からご連絡</span>
+      <span class="form-step sep">→</span>
+      <span class="form-step"><span class="n">3</span>無料でご提案</span>
+    </div>
+    <div class="reveal">
+      <div class="cta-pair center">
+        <a class="btn btn--lg" href="mailto:shittoru@s-toru.com?subject=%E5%8F%A3%E3%82%B3%E3%83%9F%E4%BD%9C%E6%88%90%E3%82%A2%E3%83%97%E3%83%AA%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">無料相談する<span class="arrow">→</span></a>
+        <a class="btn btn--lg btn--ghost" href="#jitsuga">実際の画面を見る</a>
+      </div>
+      <p class="btn-note btn-note--onDark">相談・お見積もりは無料。しつこい営業は一切ありません</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="brand">
+      <img class="footer-logo" src="assets/shittoru_logo.png" alt="株式会社しっとる ロゴ">
+      <span class="brand-tag" style="letter-spacing:.28em">SNS集客のパートナー</span>
+      <span class="brand-name" style="color:#fff"><small>株式会社</small>しっとる</span>
+    </div>
+    <p class="addr">〒700-0901 岡山県岡山市北区本町6-36 第一セントラルビル4階</p>
+    <p class="footer-contact">お問い合わせ：<a href="mailto:shittoru@s-toru.com?subject=%E5%8F%A3%E3%82%B3%E3%83%9F%E4%BD%9C%E6%88%90%E3%82%A2%E3%83%97%E3%83%AA%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">shittoru@s-toru.com</a></p>
+    <nav class="footer-links">
+      <a href="https://shittoruad-gif.github.io/lp-seisaku-lp/" target="_blank" rel="noopener">LP制作サービス</a>
+      <a href="https://ig-ads.s-toru.com/" target="_blank" rel="noopener">Instagram広告運用代行</a>
+      <a href="https://www.shittoru-seo-app.com/" target="_blank" rel="noopener">公式サイト</a>
+    </nav>
+    <p class="copy">© 2026 Shittoru Inc. All rights reserved.</p>
+  </div>
+</footer>
+
+<div class="float-cta">
+  <div class="inner">
+    <a class="btn" href="mailto:shittoru@s-toru.com?subject=%E5%8F%A3%E3%82%B3%E3%83%9F%E4%BD%9C%E6%88%90%E3%82%A2%E3%83%97%E3%83%AA%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">無料相談する<span class="opt">（メール1通）</span></a>
+    <a class="btn btn--sub" href="#jitsuga">実画面</a>
+  </div>
+</div>
+
+<script>
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add("is-visible"); io.unobserve(e.target); }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+</script>
+</body>
+</html>
